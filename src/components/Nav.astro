@@ -1,0 +1,80 @@
+---
+import appIcon from '../assets/app-icon.png';
+import { Image } from 'astro:assets';
+---
+
+<header class="nav">
+	<div class="wrap nav-inner">
+		<a href="/" class="brand">
+			<Image src={appIcon} alt="" width={28} height={28} class="brand-icon" />
+			DynamicNotch
+		</a>
+		<nav class="links">
+			<a href="https://github.com/Hitjack007/DynamicNotch" target="_blank" rel="noopener">GitHub</a>
+			<a href="https://github.com/Hitjack007/DynamicNotch/releases/latest" class="btn btn-primary btn-small" target="_blank" rel="noopener">
+				Download
+			</a>
+		</nav>
+	</div>
+</header>
+
+<style>
+	.nav {
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		padding: 14px 0;
+	}
+
+	.nav-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-weight: 600;
+		font-size: 17px;
+		text-decoration: none;
+		padding: 8px 16px 8px 10px;
+		border-radius: 980px;
+		background: rgba(5, 5, 5, 0.4);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+	}
+
+	.brand-icon {
+		border-radius: 7px;
+	}
+
+	.links {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-size: 15px;
+	}
+
+	.links a:not(.btn) {
+		text-decoration: none;
+		opacity: 0.85;
+		padding: 10px 18px;
+		border-radius: 980px;
+		background: rgba(5, 5, 5, 0.4);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+	}
+
+	.links a:not(.btn):hover {
+		opacity: 1;
+	}
+
+	.btn-small {
+		padding: 8px 18px;
+		font-size: 14px;
+	}
+</style>

@@ -1,0 +1,68 @@
+---
+import { features } from '../data/features';
+---
+
+<section class="features">
+	<div class="wrap">
+		<h2>Everything the notch was wasting</h2>
+		<div class="grid">
+			{
+				features.map((feature) => (
+					<div class="glass card">
+						<h3>{feature.title}</h3>
+						<p>{feature.description}</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.features {
+		padding: 100px 0;
+	}
+
+	h2 {
+		font-size: clamp(28px, 4vw, 40px);
+		font-weight: 700;
+		text-align: center;
+		margin: 0 0 48px;
+		letter-spacing: -0.01em;
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 18px;
+	}
+
+	.card {
+		padding: 26px;
+	}
+
+	.card h3 {
+		font-size: 18px;
+		font-weight: 600;
+		margin: 0 0 8px;
+	}
+
+	.card p {
+		font-size: 15px;
+		line-height: 1.5;
+		color: rgba(245, 245, 247, 0.68);
+		margin: 0;
+	}
+
+	@media (max-width: 900px) {
+		.grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 600px) {
+		.grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
