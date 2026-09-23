@@ -34,6 +34,28 @@ const {
 	</body>
 </html>
 
+<script>
+	function unlockVideo() {
+		const video = document.querySelector('video');
+		if (video && video.paused) {
+			video
+				.play()
+				.then(() => {
+					window.removeEventListener('touchstart', unlockVideo);
+					window.removeEventListener('click', unlockVideo);
+					window.removeEventListener('scroll', unlockVideo);
+				})
+				.catch((err) => {
+					console.log('Playback still restricted:', err);
+				});
+		}
+	}
+
+	window.addEventListener('touchstart', unlockVideo, { once: true });
+	window.addEventListener('click', unlockVideo, { once: true });
+	window.addEventListener('scroll', unlockVideo, { once: true });
+</script>
+
 <style is:global>
 	:root {
 		color-scheme: dark;
