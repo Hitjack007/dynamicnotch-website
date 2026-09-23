@@ -30,7 +30,7 @@ const {
 			<source src="/video/hero.mp4" type="video/mp4" />
 		</video>
 		<div class="bg-scrim"></div>
-		<slot />
+		<div class="page"><slot /></div>
 	</body>
 </html>
 
@@ -68,7 +68,7 @@ const {
 		height: 100%;
 		object-fit: cover;
 		object-position: top;
-		z-index: -2;
+		z-index: 0;
 	}
 
 	.bg-scrim {
@@ -80,7 +80,12 @@ const {
 			rgba(5, 5, 5, 0.2) 40%,
 			rgba(5, 5, 5, 0.55) 100%
 		);
-		z-index: -1;
+		z-index: 0;
+	}
+
+	.page {
+		position: relative;
+		z-index: 1;
 	}
 
 	.wrap {
