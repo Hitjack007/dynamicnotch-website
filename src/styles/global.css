@@ -59,6 +59,13 @@ html {
   scroll-padding-top: calc(var(--header-h) + 20px);
 }
 
+/* Links to sections (Features, Install, the privacy contents) glide instead of jumping. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   display: flex;
   flex-direction: column;

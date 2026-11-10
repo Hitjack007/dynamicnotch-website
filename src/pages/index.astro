@@ -38,7 +38,14 @@ const features = [
   sky="hero"
 >
   <section class="container hero">
-    <h1>{app.tagline}</h1>
+    <h1>
+      Make your MacBook's notch actually{' '}
+      <span class="mark">
+        useful<svg class="swoosh" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M6 20 C 70 9, 170 5, 294 14" pathLength="1" />
+        </svg>
+      </span>.
+    </h1>
     <p class="lede">Music, AI usage, HUDs, a file shelf and more, in the space that was doing nothing.</p>
     <div class="actions">
       <a class="btn btn-primary" href={app.download}><Icon name="download" size={16} /> Download for Mac</a>
@@ -137,6 +144,47 @@ const features = [
     align-items: center;
     padding-top: 80px;
     text-align: center;
+  }
+
+  /* "useful" gets a hand-drawn peach underline that draws itself in once. */
+  .mark {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .swoosh {
+    position: absolute;
+    left: -3%;
+    bottom: -0.16em;
+    width: 106%;
+    height: 0.3em;
+    overflow: visible;
+  }
+
+  .swoosh path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 7;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .swoosh path {
+      animation: draw 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
+    }
+  }
+
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
   }
 
   .hero h1 {
