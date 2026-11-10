@@ -13,7 +13,8 @@ import { app } from '../data/site';
           <span>{app.name}</span>
         </a>
         <p class="muted">
-          A free, open-source fork of <a class="inline-muted" href={app.upstream.url} target="_blank" rel="noopener">{app.upstream.name}</a>
+          A free, open-source fork of{' '}
+          <a class="inline-muted" href={app.upstream.url} target="_blank" rel="noopener">{app.upstream.name}</a>{' '}
           by {app.upstream.team}. Licensed under GPL-3.0.
         </p>
         <p class="muted">Made by <a class="author" href={app.author.url}>{app.author.name}</a>.</p>
