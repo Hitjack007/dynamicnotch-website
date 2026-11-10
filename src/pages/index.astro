@@ -41,8 +41,8 @@ const features = [
     <h1>
       Make your MacBook's notch actually{' '}
       <span class="mark">
-        useful<svg class="swoosh" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M6 20 C 70 9, 170 5, 294 14" pathLength="1" />
+        useful<svg class="swoosh" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M3 17 C 60 9, 150 4, 236 4.5 C 241 4.7, 241 10.5, 236 11 C 150 11.5, 70 18.5, 8 23.5 C 2 24, 0 18.5, 3 17 Z" />
         </svg>
       </span>.
     </h1>
@@ -153,37 +153,33 @@ const features = [
     white-space: nowrap;
   }
 
+  /* A brush stroke: thin at the ends, thicker in the middle, rising slightly to the right. */
   .swoosh {
     position: absolute;
-    left: -3%;
-    bottom: -0.16em;
-    width: 106%;
+    left: -2%;
+    bottom: -0.14em;
+    width: 104%;
     height: 0.3em;
     overflow: visible;
   }
 
   .swoosh path {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 7;
-    stroke-linecap: round;
-    vector-effect: non-scaling-stroke;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 0;
+    fill: var(--accent);
   }
 
+  /* Revealed left to right like a pen stroke: quick to start, easing off at the end. */
   @media (prefers-reduced-motion: no-preference) {
-    .swoosh path {
-      animation: draw 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
+    .swoosh {
+      animation: stroke 0.55s cubic-bezier(0.25, 0.8, 0.3, 1) 0.45s both;
     }
   }
 
-  @keyframes draw {
+  @keyframes stroke {
     from {
-      stroke-dashoffset: 1;
+      clip-path: inset(0 100% 0 0);
     }
     to {
-      stroke-dashoffset: 0;
+      clip-path: inset(0 0 0 0);
     }
   }
 
