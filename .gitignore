@@ -27,7 +27,3 @@ pnpm-debug.log*
 .firebase/
 firebase-debug.log*
 
-# HyperFrames: renders and local artifacts (the web encodes live in public/media)
-film/hero/renders/
-film/hero/.hyperframes/
-film/hero/node_modules/

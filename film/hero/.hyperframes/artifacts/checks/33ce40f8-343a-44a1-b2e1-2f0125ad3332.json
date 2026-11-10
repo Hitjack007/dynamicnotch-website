@@ -1,0 +1,291 @@
+{
+  "ok": false,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": false,
+    "errorCount": 1,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "nested_media_start_basis_ambiguous",
+        "severity": "warning",
+        "message": "<video id=\"open-vid\"> has data-start=\"1.9\" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.",
+        "selector": "#open-vid",
+        "dataAttributes": {},
+        "sourceFile": "/Users/mark/Desktop/dynamicnotch-website/film/hero/compositions/open.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Keep data-start=\"1.9\" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis=\"global\"; otherwise convert it to local time by subtracting the host start."
+      },
+      {
+        "code": "gsap_non_transform_motion",
+        "severity": "error",
+        "message": "GSAP tween on \"#shelf-word-in\" uses motion that snaps to integer device pixels: letterSpacing. Layout and text-reflow properties snap during browser layout; roundProps rounds the tween value. Slow motion or an ease-out tail then stutters under the seek-by-frame capture engine. Animate transforms (x/y/scale/opacity) instead.",
+        "selector": "#shelf-word-in",
+        "dataAttributes": {},
+        "sourceFile": "/Users/mark/Desktop/dynamicnotch-website/film/hero/compositions/shelf.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "do not animate letterSpacing (they reflow text and snap glyph positions): for letterSpacing, split the text into per-character elements and animate each glyph's x (the spread), since uniform scale is NOT equivalent, or hold the final value statically. Transforms interpolate sub-pixel and stay smooth at any speed."
+      }
+    ],
+    "filesScanned": 7
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": false,
+    "errorCount": 1,
+    "warningCount": 2,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "text_occluded",
+        "severity": "error",
+        "time": 13.139,
+        "selector": "#hud-roll > div:nth-of-type(1)",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 192,
+          "top": 552,
+          "right": 698.2,
+          "bottom": 747,
+          "width": 506.2,
+          "height": 195
+        },
+        "containerSelector": "#hud-vid",
+        "text": "Volume",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "lifetime": {
+          "start": 10.9,
+          "end": 13.95
+        },
+        "dataAttributes": {},
+        "sourceFile": "compositions/hud.html",
+        "bbox": {
+          "x": 192,
+          "y": 552,
+          "width": 506.2,
+          "height": 195
+        },
+        "firstSeen": 13.139,
+        "lastSeen": 13.139,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          13.139
+        ]
+      },
+      {
+        "code": "container_overflow",
+        "severity": "warning",
+        "time": 17.917,
+        "selector": "#end-cam",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -7.2,
+          "top": 0,
+          "right": 2296.8,
+          "bottom": 1296,
+          "width": 2304,
+          "height": 1296
+        },
+        "containerSelector": "#endcard > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 7.2,
+          "right": 376.8,
+          "bottom": 216
+        },
+        "dataAttributes": {},
+        "sourceFile": "compositions/endcard.html",
+        "bbox": {
+          "x": -7.2,
+          "y": 0,
+          "width": 2304,
+          "height": 1296
+        },
+        "firstSeen": 17.917,
+        "lastSeen": 20.306,
+        "occurrences": 2,
+        "heldMs": 0,
+        "times": [
+          17.917,
+          20.306
+        ]
+      },
+      {
+        "code": "container_overflow",
+        "severity": "warning",
+        "time": 17.917,
+        "selector": "#end-panel",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 0,
+          "top": -60,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1140
+        },
+        "containerSelector": "#endcard > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "top": 60
+        },
+        "dataAttributes": {},
+        "sourceFile": "compositions/endcard.html",
+        "bbox": {
+          "x": 0,
+          "y": -60,
+          "width": 1920,
+          "height": 1140
+        },
+        "firstSeen": 17.917,
+        "lastSeen": 20.306,
+        "occurrences": 2,
+        "heldMs": 0,
+        "times": [
+          17.917,
+          20.306
+        ]
+      }
+    ],
+    "duration": 21.5,
+    "samples": [
+      1.194,
+      3.583,
+      5.972,
+      8.361,
+      10.75,
+      13.139,
+      15.528,
+      17.917,
+      20.306
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 3,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      1.194,
+      5.972,
+      10.75,
+      15.528,
+      20.306
+    ],
+    "checked": 9,
+    "passed": 9
+  },
+  "craft": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "film_silent",
+        "severity": "warning",
+        "message": "This 22 s film has no sound source (no <audio>, no <video> with sound): add a music bed and sounds on the visible actions unless the person asked for silence; see references/sound.md.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      }
+    ],
+    "enabled": true,
+    "step": 0.125,
+    "samples": 172
+  },
+  "audio": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 1,
+    "findings": [
+      {
+        "code": "audio_none",
+        "severity": "info",
+        "message": "The film has no sound: no clip in it plays audio.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      }
+    ]
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

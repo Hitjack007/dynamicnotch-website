@@ -4,11 +4,10 @@ import Icon from '../components/Icon.astro';
 import CopyCommand from '../components/CopyCommand.astro';
 import { app } from '../data/site';
 
-// The hero screen. When the steady re-recording is cut, set `video` to its files;
-// until then the screen shows a still of the open notch.
+// The hero screen: a steady 2.4:1 loop of the top of a Mac screen, cut by film/build-hero.py.
 const hero = {
   still: '/media/hero/still.jpg',
-  video: null as null | { webm: string; mp4: string },
+  video: { webm: '/media/hero/hero.webm', mp4: '/media/hero/hero.mp4', small: '/media/hero/hero-960.mp4' },
 };
 
 // From the app's README, one line each.
@@ -48,13 +47,14 @@ const features = [
 
     <div class="screen">
       {hero.video ? (
-        <video data-autoplay muted loop playsinline preload="auto" poster={hero.still} width="2400" height="1000"
-          aria-label="DynamicNotch in use: the notch opens to Now Playing, AI usage, the volume HUD and the file shelf.">
+        <video data-autoplay muted loop playsinline preload="auto" poster={hero.still} width="1920" height="800"
+          aria-label="DynamicNotch in use: the notch opens to Now Playing, skips a track, then shows the file shelf, system stats and AI usage before closing again.">
+          <source src={hero.video.small} type="video/mp4" media="(max-width: 700px)" />
           <source src={hero.video.webm} type="video/webm" />
           <source src={hero.video.mp4} type="video/mp4" />
         </video>
       ) : (
-        <img src={hero.still} width="1500" height="625" alt="The DynamicNotch notch open at the top of a Mac screen, showing a song playing next to a small calendar." />
+        <img src={hero.still} width="1920" height="800" alt="The DynamicNotch notch open at the top of a Mac screen, showing a song playing next to a small calendar." />
       )}
     </div>
   </section>
