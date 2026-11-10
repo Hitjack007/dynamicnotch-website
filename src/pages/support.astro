@@ -1,0 +1,349 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import CopyCommand from '../components/CopyCommand.astro';
+import { app } from '../data/site';
+
+const help = [
+  {
+    icon: 'bug',
+    title: 'Report a bug',
+    text: 'In DynamicNotch’s settings, click Report an Issue. It saves your diagnostic logs and opens the bug report form, so you can drag them in.',
+    href: app.bugReport,
+    cta: 'Open the bug form',
+    primary: true,
+  },
+  {
+    icon: 'bulb',
+    title: 'Request a feature',
+    text: 'Ideas are welcome. Check the open issues first in case someone’s already asked.',
+    href: app.featureRequest,
+    cta: 'Suggest a feature',
+  },
+  {
+    icon: 'mail',
+    title: 'Email',
+    text: 'For anything else, or if you’d rather not use GitHub.',
+    href: `mailto:${app.supportEmail}`,
+    cta: app.supportEmail,
+  },
+  {
+    icon: 'shield',
+    title: 'Security issue',
+    text: 'Please don’t post security problems publicly. Follow the security policy instead.',
+    href: app.security,
+    cta: 'Security policy',
+  },
+] as const;
+
+const permissions = [
+  ['Accessibility', 'Replaces the system volume, brightness and keyboard backlight HUDs.'],
+  ['Screen & System Audio Recording', 'Powers the audio spectrogram. Audio is analysed live and never recorded or saved.'],
+  ['Calendars and Reminders', 'Shows your upcoming events and reminders in the notch.'],
+  ['Camera', 'Shows the live Mirror view. Nothing is recorded or saved.'],
+  ['Bluetooth', 'Identifies your audio device so the volume HUD shows the right icon.'],
+  ['Automation', 'Controls music apps from the notch.'],
+];
+---
+
+<Base title="Support · DynamicNotch" description="Help, install steps and answers to common questions about DynamicNotch.">
+  <div class="container narrow">
+    <header class="page-head">
+      <p class="eyebrow">DynamicNotch</p>
+      <h1>Support</h1>
+      <p class="lede">Install help, answers to common questions, and how to reach us if something isn’t working.</p>
+    </header>
+
+    <section aria-labelledby="help-title">
+      <h2 id="help-title" class="block-title">Getting help</h2>
+      <ul class="help">
+        {help.map(h => (
+          <li class="card help-card">
+            <span class="icon-tile"><Icon name={h.icon} size={18} /></span>
+            <div>
+              <h3>{h.title}</h3>
+              <p>{h.text}</p>
+            </div>
+            <a
+              class:list={['btn', { 'btn-primary': 'primary' in h }]}
+              href={h.href}
+              target={h.href.startsWith('mailto:') ? undefined : '_blank'}
+              rel={h.href.startsWith('mailto:') ? undefined : 'noopener'}
+            >{h.cta}</a>
+          </li>
+        ))}
+      </ul>
+      <p class="muted note">DynamicNotch is a free project maintained in spare time, so replies may take a day or two.</p>
+    </section>
+
+    <section class="block" aria-labelledby="faq-title">
+      <h2 id="faq-title" class="block-title">Frequently asked questions</h2>
+
+      <div class="faq">
+        <details id="install" open>
+          <summary>How do I install it?<Icon name="chevron" size={18} class="chev" /></summary>
+          <div class="answer prose">
+            <p>Download the latest <strong>DynamicNotch.dmg</strong> from the <a href={app.download}>Releases</a> page, open it and drag <strong>DynamicNotch</strong> to your Applications folder. If you use Homebrew, run this instead:</p>
+            <CopyCommand command={app.brew} label="Copy the Homebrew command" />
+            <p>The <a href="/#install">install steps</a> on the home page have the full walkthrough.</p>
+          </div>
+        </details>
+
+        <details id="security-warning">
+          <summary>macOS won’t open the app or says it can’t be checked<Icon name="chevron" size={18} class="chev" /></summary>
+          <div class="answer prose">
+            <p>If you installed from the DMG, run this once in Terminal to clear the macOS security warning, then open the app again:</p>
+            <CopyCommand command={app.unquarantine} label="Copy the Terminal command" />
+            <p>Installing with Homebrew skips this step.</p>
+          </div>
+        </details>
+
+        <details id="requirements">
+          <summary>What do I need? Does my Mac need a notch?<Icon name="chevron" size={18} class="chev" /></summary>
+          <div class="answer prose">
+            <p>{app.requirements}. Your Mac doesn’t need a notch: DynamicNotch draws its own, so it works on any Mac.</p>
+          </div>
+        </details>
+
+        <details id="permissions">
+          <summary>Which permissions does it ask for, and why?<Icon name="chevron" size={18} class="chev" /></summary>
+          <div class="answer">
+            <p class="perm-intro">Each permission is only for the feature that needs it. If you’d rather not grant one, that feature won’t work, and everything else still will.</p>
+            <dl class="perms">
+              {permissions.map(([name, why]) => (
+                <div>
+                  <dt>{name}</dt>
+                  <dd>{why}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </details>
+
+        <details id="ai-usage">
+          <summary>How does AI usage tracking connect to Claude or ChatGPT?<Icon name="chevron" size={18} class="chev" /></summary>
+          <div class="answer prose">
+            <p>Sign in to claude.ai or chatgpt.com in your browser first. When you connect in DynamicNotch’s settings, it reads that browser’s sign-in cookie (Safari, Chrome, Brave or Edge) and stores it in your Mac’s Keychain. For Chrome, Brave and Edge, macOS asks your permission first. You can also paste your session key by hand.</p>
+            <p>DynamicNotch only uses it to ask Claude or ChatGPT for your usage. Disconnect at any time to remove it. The <a href="/privacy#ai-usage">Privacy Policy</a> has the details.</p>
+          </div>
+        </details>
+
+        <details id="extensions">
+          <summary>Why can’t DynamicNotch write my extension for me?<Icon name="chevron" size={18} class="chev" /></summary>
+          <div class="answer prose">
+            <p>Writing extensions from a plain-English description uses Apple’s on-device model, which needs macOS 26 with Apple Intelligence turned on. On other Macs you can still write the rules yourself, or paste them from a chatbot, and DynamicNotch checks them the same way.</p>
+          </div>
+        </details>
+
+        <details id="updates">
+          <summary>How do I update?<Icon name="chevron" size={18} class="chev" /></summary>
+          <div class="answer prose">
+            <p>DynamicNotch checks for updates automatically. If you installed with Homebrew, you can also run <code>brew upgrade --cask dynamicnotch</code>.</p>
+            <p>Version numbers follow the macOS version a release is tuned for, so 27.1 is the first feature release built for macOS 27. Every release still runs on macOS 15 and later.</p>
+          </div>
+        </details>
+
+        <details id="uninstall">
+          <summary>How do I uninstall it?<Icon name="chevron" size={18} class="chev" /></summary>
+          <div class="answer prose">
+            <p>Disconnect AI usage in settings if you connected it, then quit DynamicNotch and drag it from Applications to the Trash. If you installed with Homebrew, run <code>brew uninstall --cask dynamicnotch</code>.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="privacy-title">
+      <a class="card privacy-link" href="/privacy">
+        <span class="icon-tile"><Icon name="lock" size={18} /></span>
+        <span>
+          <span class="privacy-title" id="privacy-title">Privacy</span>
+          <span class="muted">What DynamicNotch does with your data. Short version: it stays on your Mac.</span>
+        </span>
+        <Icon name="arrow-right" size={18} class="arrow" />
+      </a>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page-head h1 {
+    margin-top: 12px;
+  }
+
+  .block {
+    margin-top: 64px;
+  }
+
+  .block-title {
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+
+  /* Help options */
+
+  .help {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .help-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 22px;
+  }
+
+  .help-card h3 {
+    font-size: 17px;
+  }
+
+  .help-card p {
+    margin-top: 4px;
+    font-size: 15px;
+    color: var(--text-2);
+  }
+
+  .help-card .btn {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .note {
+    margin-top: 14px;
+    font-size: 15px;
+  }
+
+  /* FAQ */
+
+  .faq {
+    border-top: 1px solid var(--border);
+  }
+
+  details {
+    border-bottom: 1px solid var(--border);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 0;
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--dur) var(--ease);
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:hover {
+    color: var(--accent);
+  }
+
+  summary :global(.chev) {
+    flex: none;
+    color: var(--text-2);
+    transition: transform var(--dur) var(--ease);
+  }
+
+  details[open] summary :global(.chev) {
+    transform: rotate(180deg);
+  }
+
+  .answer {
+    padding-bottom: 22px;
+  }
+
+  .perm-intro {
+    color: color-mix(in srgb, var(--text) 82%, var(--text-2));
+  }
+
+  .perms {
+    margin: 16px 0 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .perms div {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .perms dt {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .perms dd {
+    margin: 0;
+    font-size: 15px;
+    color: var(--text-2);
+  }
+
+  /* Privacy link */
+
+  .privacy-link {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 22px;
+    transition: border-color var(--dur) var(--ease);
+  }
+
+  .privacy-link:hover {
+    border-color: var(--text-2);
+  }
+
+  .privacy-link > span:nth-child(2) {
+    display: grid;
+  }
+
+  .privacy-title {
+    font-weight: 600;
+  }
+
+  .privacy-link :global(.arrow) {
+    color: var(--text-2);
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .privacy-link:hover :global(.arrow) {
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 640px) {
+    .help-card {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .help-card .btn {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+
+    .perms div {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+</style>
+
+<script>
+  // Open the matching question when arriving from a link like /support#permissions.
+  const openFromHash = () => {
+    const target = location.hash && document.getElementById(location.hash.slice(1));
+    if (target instanceof HTMLDetailsElement) target.open = true;
+  };
+  openFromHash();
+  window.addEventListener('hashchange', openFromHash);
+</script>

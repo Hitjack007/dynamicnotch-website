@@ -1,7 +1,9 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
-// https://astro.build/config
 export default defineConfig({
-	site: 'https://dynamicnotch.marksstuff.com',
+  site: 'https://dynamicnotch.marksstuff.com',
+  trailingSlash: 'never',
+  build: { format: 'file' },
+  integrations: [sitemap()],
 });

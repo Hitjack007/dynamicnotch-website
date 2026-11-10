@@ -1,0 +1,478 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Clip from '../components/Clip.astro';
+import CopyCommand from '../components/CopyCommand.astro';
+import { app } from '../data/site';
+
+// Features with a real clip from the screen recording.
+const spotlights = [
+  {
+    clip: 'now-playing',
+    eyebrow: 'Music',
+    title: 'What’s playing, right at the top of your screen',
+    text: 'Album art, playback controls and now-playing info, with your calendar alongside. A real-time spectrogram moves with the music, and lyrics are one switch away.',
+    alt: 'The notch open to Now Playing: album art, a progress bar, playback controls and a small calendar.',
+  },
+  {
+    clip: 'ai-usage',
+    eyebrow: 'AI usage',
+    title: 'Know before you hit your Claude or ChatGPT limit',
+    text: 'DynamicNotch tracks your Claude and ChatGPT usage and shows an alert in the notch as you get close to your limit, so you’re not caught out mid-session.',
+    alt: 'The notch showing 31% of a Claude session limit used, with 3 hours 6 minutes until it resets.',
+  },
+  {
+    clip: 'huds',
+    eyebrow: 'HUDs',
+    title: 'Volume and brightness, without the clunky overlay',
+    text: 'Replaces the macOS volume, brightness and keyboard backlight overlays with HUDs that live in the notch, where your eyes already are.',
+    alt: 'A volume HUD inside the notch, showing the volume muted.',
+  },
+  {
+    clip: 'shelf',
+    eyebrow: 'Shelf',
+    title: 'A shelf for the files you need next',
+    text: 'Drag files onto the notch to keep them handy while you work, then drag them back out or AirDrop them.',
+    alt: 'The notch open to the file shelf, holding several documents next to an AirDrop target.',
+  },
+  {
+    clip: 'extensions',
+    eyebrow: 'Extensions',
+    title: 'Automations in plain English',
+    text: 'Describe a small automation, like turning Caffeine on whenever Xcode is in front, and DynamicNotch runs it every time. No code required. On macOS 26 with Apple Intelligence, it drafts the rules for you on your Mac.',
+    alt: 'DynamicNotch settings showing an extension called Turn Caffeine On, triggered by Xcode, being switched on.',
+  },
+];
+
+// Everything else, from the app's README.
+const more = [
+  { icon: 'resize', title: 'Dynamic sizing', text: 'Expands and contracts with what’s happening on screen.' },
+  { icon: 'fan', title: 'Fan & thermal', text: 'Live fan speed and CPU temperature, with a custom fan curve editor.' },
+  { icon: 'cpu', title: 'CPU usage', text: 'Always visible, at a glance.' },
+  { icon: 'coffee', title: 'Caffeine', text: 'Keep your Mac awake, straight from the notch.' },
+  { icon: 'calendar', title: 'Calendar & Reminders', text: 'Upcoming events and reminders in the notch.' },
+  { icon: 'downloads', title: 'Downloads', text: 'Track in-progress browser downloads.' },
+  { icon: 'camera', title: 'Mirror', text: 'A quick webcam check before your next call.' },
+  { icon: 'battery', title: 'Battery', text: 'Charging status and percentage.' },
+  { icon: 'gesture', title: 'Gestures', text: 'Swipe to open and close the notch.' },
+  { icon: 'glass', title: 'Liquid Glass', text: 'An optional glass background for the open notch on macOS 26.' },
+  { icon: 'laptop', title: 'Any Mac', text: 'Draws its own notch, so no notch display is needed.' },
+  { icon: 'lyrics', title: 'Lyrics', text: 'Optional lyrics for the song that’s playing.' },
+] as const;
+---
+
+<Base
+  title="DynamicNotch: make your MacBook's notch actually useful"
+  description="DynamicNotch turns your MacBook's notch into a live dashboard: music, AI usage limits, HUDs, a file shelf, fan and CPU stats, and automations in plain English. Free and open source."
+  image="/media/hero/poster.jpg"
+>
+  <section class="container hero">
+    <div class="hero-copy">
+      <p class="eyebrow accent">Free and open source · macOS</p>
+      <h1>{app.tagline}</h1>
+      <p class="lede">
+        DynamicNotch turns the notch into a live dashboard: music controls, AI usage limits, smart HUDs, a file shelf,
+        fan speeds and CPU stats, all in the space that was doing nothing.
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href={app.download}><Icon name="download" size={16} /> Download for Mac</a>
+        <a class="btn" href={app.repo} target="_blank" rel="noopener"><Icon name="github" size={16} /> View on GitHub</a>
+      </div>
+      <p class="hero-note muted">Requires {app.requirements}. Works on any Mac, notch or not. Or <a class="inline" href="#install">install with Homebrew</a>.</p>
+    </div>
+
+    <div class="film">
+      <video
+        data-autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        poster="/media/hero/poster.jpg"
+        width="1920"
+        height="1080"
+        aria-label="A 20-second film of DynamicNotch: the idle notch opens to Now Playing, then shows AI usage, the volume and brightness HUDs and the file shelf."
+      >
+        <source src="/media/hero/hero-960.mp4" type="video/mp4" media="(max-width: 700px)" />
+        <source src="/media/hero/hero-1920.webm" type="video/webm" />
+        <source src="/media/hero/hero-1920.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </section>
+
+  <section class="container section" id="features" aria-labelledby="features-title">
+    <div class="section-head">
+      <p class="eyebrow">Features</p>
+      <h2 id="features-title">The notch, doing something</h2>
+      <p>Every clip on this page is the real app, recorded on a Mac.</p>
+    </div>
+
+    <div class="spotlights">
+      {spotlights.map((s, i) => (
+        <article class:list={['spotlight', { flip: i % 2 === 1 }]}>
+          <div class="spotlight-copy">
+            <p class="eyebrow accent">{s.eyebrow}</p>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+          <Clip name={s.clip} alt={s.alt} />
+        </article>
+      ))}
+    </div>
+
+    <div class="more">
+      <h3 class="more-title">And everything else</h3>
+      <ul class="more-grid">
+        {more.map(m => (
+          <li>
+            <span class="icon-tile"><Icon name={m.icon} size={18} /></span>
+            <div>
+              <h4>{m.title}</h4>
+              <p>{m.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section" id="install" aria-labelledby="install-title">
+    <div class="section-head">
+      <p class="eyebrow">Install</p>
+      <h2 id="install-title">Get DynamicNotch</h2>
+      <p>Requires {app.requirements}. Any Mac works: DynamicNotch draws its own notch if yours doesn’t have one.</p>
+    </div>
+
+    <div class="install">
+      <article class="card install-card">
+        <div class="install-head">
+          <span class="icon-tile"><Icon name="download" size={18} /></span>
+          <h3>Download</h3>
+        </div>
+        <ol class="steps">
+          <li>
+            Download the latest <strong>DynamicNotch.dmg</strong> from GitHub.
+            <a class="btn btn-primary step-btn" href={app.download}><Icon name="download" size={16} /> Download DynamicNotch.dmg</a>
+          </li>
+          <li>Open the DMG and drag <strong>DynamicNotch</strong> to your Applications folder.</li>
+          <li>
+            Before opening, run this once in Terminal to clear the macOS security warning:
+            <CopyCommand command={app.unquarantine} label="Copy the Terminal command" />
+          </li>
+          <li>Open the app. Your notch is now alive.</li>
+        </ol>
+      </article>
+
+      <article class="card install-card">
+        <div class="install-head">
+          <span class="icon-tile"><Icon name="terminal" size={18} /></span>
+          <h3>Homebrew</h3>
+        </div>
+        <p class="muted">If you use <a class="inline" href="https://brew.sh" target="_blank" rel="noopener">Homebrew</a>, one command installs DynamicNotch and skips the security warning.</p>
+        <CopyCommand command={app.brew} label="Copy the Homebrew command" />
+        <p class="muted versioning">
+          <strong>About version numbers:</strong> the major number is the macOS version a release is tuned for, so
+          27.1 is the first feature release built for macOS 27. Every release still runs on macOS 15 and later.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="container section" aria-labelledby="oss-title">
+    <div class="oss">
+      <div>
+        <p class="eyebrow">Open source</p>
+        <h2 id="oss-title">Built in the open</h2>
+        <p class="muted">
+          DynamicNotch is free and licensed under GPL-3.0. It’s a fork of
+          <a class="inline" href={app.upstream.url} target="_blank" rel="noopener">{app.upstream.name}</a> by
+          {app.upstream.team}, whose work is the foundation of everything here. Code, bug reports, feature requests and
+          translations are all welcome.
+        </p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href={app.repo} target="_blank" rel="noopener"><Icon name="github" size={16} /> Source on GitHub</a>
+        <a class="btn" href={app.contributing} target="_blank" rel="noopener">How to contribute <Icon name="arrow-up-right" size={14} /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+
+  .hero {
+    padding-top: 72px;
+  }
+
+  .hero-copy {
+    max-width: 780px;
+  }
+
+  .hero h1 {
+    margin-top: 16px;
+    font-size: clamp(40px, 6vw, 68px);
+    letter-spacing: -0.045em;
+    line-height: 1.04;
+  }
+
+  .lede {
+    margin-top: 20px;
+    font-size: 19px;
+    color: var(--text-2);
+  }
+
+  .hero .actions {
+    margin-top: 28px;
+  }
+
+  .hero-note {
+    margin-top: 16px;
+    font-size: 14px;
+  }
+
+  .film {
+    position: relative;
+    margin-top: 56px;
+    overflow: hidden;
+    border-radius: calc(var(--radius) + 6px);
+    border: 1px solid var(--border-strong);
+    background: #000;
+    box-shadow:
+      0 40px 120px -40px rgb(74 63 184 / 0.55),
+      0 30px 80px -30px rgb(0 0 0 / 0.9);
+  }
+
+  .film video {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* Feature spotlights */
+
+  .spotlights {
+    display: grid;
+    gap: 88px;
+  }
+
+  .spotlight {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    align-items: center;
+    gap: 56px;
+  }
+
+  .spotlight.flip .spotlight-copy {
+    order: 2;
+  }
+
+  .spotlight h3 {
+    margin-top: 12px;
+    font-size: clamp(24px, 2.6vw, 32px);
+    letter-spacing: -0.03em;
+  }
+
+  .spotlight-copy > p:last-child {
+    margin-top: 14px;
+    font-size: 17px;
+    color: var(--text-2);
+  }
+
+  /* Everything else */
+
+  .more {
+    margin-top: 104px;
+  }
+
+  .more-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .more-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .more-grid li {
+    display: flex;
+    gap: 14px;
+    padding: 20px 20px 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .more-grid h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .more-grid p {
+    margin-top: 2px;
+    font-size: 14.5px;
+    color: var(--text-2);
+  }
+
+  /* Install */
+
+  .install {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  .install-card {
+    display: grid;
+    gap: 16px;
+    padding: 26px;
+  }
+
+  .install-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .install-head h3 {
+    font-size: 20px;
+  }
+
+  .steps {
+    display: grid;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .steps li {
+    position: relative;
+    padding-left: 38px;
+    color: color-mix(in srgb, var(--text) 82%, var(--text-2));
+    counter-increment: step;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 1px;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface-2);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-2);
+  }
+
+  .steps strong,
+  .versioning strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .step-btn {
+    display: flex;
+    width: fit-content;
+    margin-top: 10px;
+  }
+
+  .steps li :global(.cmd) {
+    margin-top: 10px;
+  }
+
+  .versioning {
+    margin-top: 4px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 14.5px;
+  }
+
+  /* Open source */
+
+  .oss {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 32px;
+    padding: clamp(28px, 5vw, 56px);
+    border-radius: calc(var(--radius) + 6px);
+    border: 1px solid var(--border);
+    background:
+      radial-gradient(90% 140% at 0% 0%, rgb(74 63 184 / 0.28), transparent 60%),
+      var(--surface);
+  }
+
+  .oss h2 {
+    margin-top: 12px;
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: -0.035em;
+  }
+
+  .oss p {
+    margin-top: 14px;
+    max-width: 60ch;
+  }
+
+  @media (max-width: 900px) {
+    .spotlight {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .spotlight.flip .spotlight-copy {
+      order: 0;
+    }
+
+    .spotlights {
+      gap: 64px;
+    }
+
+    .more-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .install,
+    .oss {
+      grid-template-columns: 1fr;
+    }
+
+    .oss {
+      align-items: start;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hero {
+      padding-top: 44px;
+    }
+
+    .film {
+      margin-top: 36px;
+    }
+
+    .more-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .install-card {
+      padding: 20px;
+    }
+
+    .steps li {
+      padding-left: 34px;
+    }
+  }
+</style>

@@ -1,0 +1,240 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { app } from '../data/site';
+
+// Written from what the app's code does (permissions, network requests, storage) as of
+// DynamicNotch 27.x. Update it, and the date, whenever a feature changes what it touches.
+const lastUpdated = { iso: '2026-11-10', label: '10 November 2026' };
+
+const sections = [
+  { id: 'who', title: 'Who we are' },
+  { id: 'on-your-mac', title: 'What stays on your Mac' },
+  { id: 'ai-usage', title: 'AI usage tracking' },
+  { id: 'internet', title: 'Other features that use the internet' },
+  { id: 'extensions', title: 'Extensions' },
+  { id: 'bug-reports', title: 'Bug reports' },
+  { id: 'not-collected', title: 'What we don’t do' },
+  { id: 'website', title: 'This website' },
+  { id: 'children', title: 'Children' },
+  { id: 'changes', title: 'Changes' },
+  { id: 'contact', title: 'Contact' },
+];
+
+const permissions = [
+  ['Calendars and Reminders', 'Read to show your upcoming events and reminders in the notch.'],
+  ['Camera', 'Used only while the Mirror view is open, to show a live preview. Nothing is recorded or saved.'],
+  ['Screen & System Audio Recording', 'Used to capture your Mac’s audio for the spectrogram. The audio is analysed as it plays and is never recorded, saved or sent anywhere.'],
+  ['Accessibility', 'Used to replace the system volume, brightness and keyboard backlight HUDs.'],
+  ['Bluetooth', 'Used to identify your connected audio device so the volume HUD shows the right icon.'],
+  ['Automation', 'Used to control music apps from the notch.'],
+  ['Files', 'Files you drag onto the Shelf stay where they are on your Mac. DynamicNotch keeps a reference to them so it can show them, and the Downloads feature watches for in-progress browser downloads.'],
+];
+---
+
+<Base title="Privacy Policy · DynamicNotch" description="How DynamicNotch handles your data: what stays on your Mac, the few features that use the internet, and what we never collect.">
+  <div class="container">
+    <header class="page-head">
+      <p class="eyebrow">DynamicNotch</p>
+      <h1>Privacy Policy</h1>
+      <p class="meta updated">Last updated: <time datetime={lastUpdated.iso}>{lastUpdated.label}</time></p>
+    </header>
+
+    <div class="layout">
+      <nav class="toc" aria-labelledby="toc-title">
+        <p class="eyebrow" id="toc-title">On this page</p>
+        <ol>
+          {sections.map(s => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+        </ol>
+      </nav>
+
+      <article class="prose policy">
+        <p>This policy explains what DynamicNotch (“the app”) does with your data.</p>
+        <div class="callout">
+          <Icon name="shield" size={20} />
+          <p>The short version: <strong>DynamicNotch runs on your Mac and keeps your data there. We have no servers, no accounts and no analytics, so we never see your data.</strong></p>
+        </div>
+
+        <h2 id="who">Who we are</h2>
+        <p>DynamicNotch is a free, open-source app maintained by {app.author.name} and contributors, and is a fork of <a href={app.upstream.url}>{app.upstream.name}</a> by {app.upstream.team}. Its source code is public at <a href={app.repo}>github.com/Hitjack007/DynamicNotch</a>, so anyone can check what it does. Contact: <a href={`mailto:${app.legalEmail}`}>{app.legalEmail}</a>.</p>
+
+        <h2 id="on-your-mac">What stays on your Mac</h2>
+        <p>Most of DynamicNotch works entirely on your Mac. macOS asks before the app can use any of the following, and each one is only for the feature that needs it:</p>
+        <dl class="perms">
+          {permissions.map(([name, why]) => (
+            <div>
+              <dt>{name}</dt>
+              <dd>{why}</dd>
+            </div>
+          ))}
+        </dl>
+        <p>Your settings are stored in the app’s preferences on your Mac. None of this information is sent to us or anyone else.</p>
+
+        <h2 id="ai-usage">AI usage tracking</h2>
+        <p>AI usage tracking is off until you connect it. When you connect Claude or ChatGPT in settings:</p>
+        <ul>
+          <li>DynamicNotch reads the sign-in cookie for claude.ai or chatgpt.com from your browser (Safari, Chrome, Brave or Edge). For Chrome, Brave and Edge, macOS asks your permission before the app can unlock that browser’s cookies. You can paste your session key by hand instead.</li>
+          <li>The session key or token is stored in your Mac’s Keychain.</li>
+          <li>It’s used only to request your usage and limits directly from claude.ai or chatgpt.com. Those requests go straight from your Mac to Anthropic or OpenAI, never through us, and their own privacy policies apply.</li>
+          <li>Disconnecting in settings deletes the stored key or token from your Keychain.</li>
+        </ul>
+
+        <h2 id="internet">Other features that use the internet</h2>
+        <ul>
+          <li><strong>Lyrics</strong> (off by default): the title and artist of the song that’s playing are sent to <a href="https://lrclib.net">LRCLIB</a> to look up its lyrics.</li>
+          <li><strong>Software updates:</strong> the app checks an update feed hosted on GitHub, and can fetch release notes from GitHub’s API. No information about you or your Mac is included beyond what any web request reveals, such as your IP address.</li>
+          <li><strong>Animations:</strong> one small animation is downloaded from LottieFiles.</li>
+        </ul>
+        <p>These services receive the request itself, including your IP address, and handle it under their own privacy policies.</p>
+
+        <h2 id="extensions">Extensions</h2>
+        <p>When DynamicNotch drafts an extension from your description, it uses Apple’s on-device model, so your description never leaves your Mac. If you choose to ask an outside chatbot to write the rules and paste them in, what you share with that chatbot is between you and that service.</p>
+
+        <h2 id="bug-reports">Bug reports</h2>
+        <p>Diagnostic logs are kept on your Mac. When you click Report an Issue, the app saves them as files and opens the bug report form on GitHub. Nothing is uploaded unless you attach the files yourself. GitHub issues are public, so check the logs before you share them.</p>
+
+        <h2 id="not-collected">What we don’t do</h2>
+        <ul>
+          <li>No accounts, and no servers of our own.</li>
+          <li>No analytics, advertising, tracking or automatic crash reporting.</li>
+          <li>We don’t sell, share or receive your data, so there’s nothing for us to delete. To remove everything from your Mac, disconnect AI usage and delete the app.</li>
+        </ul>
+
+        <h2 id="website">This website</h2>
+        <p>This website has no accounts, contact forms, cookies, advertising or analytics. It’s hosted on Firebase Hosting, run by Google, which processes technical details such as your IP address to deliver and secure the site under its <a href="https://policies.google.com/privacy">privacy policy</a>. If you email us, we use your message only to reply.</p>
+
+        <h2 id="children">Children</h2>
+        <p>DynamicNotch isn’t directed at children under 13, and we don’t knowingly collect data from anyone.</p>
+
+        <h2 id="changes">Changes</h2>
+        <p>If this policy changes, the updated version will be posted here with a new date. The full history is in the website’s <a href="https://github.com/Hitjack007/dynamicnotch-website">GitHub repository</a>.</p>
+
+        <h2 id="contact">Contact</h2>
+        <p>Questions about this policy: <a href={`mailto:${app.legalEmail}`}>{app.legalEmail}</a>.</p>
+      </article>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page-head h1 {
+    margin-top: 12px;
+  }
+
+  .updated {
+    margin-top: 14px;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 64px;
+    align-items: start;
+  }
+
+  .toc {
+    position: sticky;
+    top: calc(var(--header-h) + 28px);
+    max-height: calc(100vh - var(--header-h) - 56px);
+    overflow-y: auto;
+  }
+
+  .toc ol {
+    display: grid;
+    gap: 2px;
+    margin: 12px 0 0;
+    padding: 0 0 0 1px;
+    list-style: none;
+    border-left: 1px solid var(--border);
+  }
+
+  .toc a {
+    display: block;
+    margin-left: -1px;
+    padding: 5px 0 5px 14px;
+    border-left: 1px solid transparent;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-2);
+    transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+
+  .toc a:hover {
+    color: var(--text);
+    border-left-color: var(--text-2);
+  }
+
+  .policy .callout {
+    margin-top: 20px;
+  }
+
+  .policy .callout p {
+    color: var(--text);
+  }
+
+  .policy h2 {
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    font-size: 22px;
+  }
+
+  .perms {
+    margin: 16px 0 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .perms div {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .perms dt {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .perms dd {
+    margin: 0;
+    font-size: 15px;
+    color: var(--text-2);
+  }
+
+  @media (max-width: 960px) {
+    .layout {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .toc {
+      position: static;
+      max-height: none;
+      padding: 18px 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .toc ol {
+      display: block;
+      padding: 0;
+      border-left: 0;
+      columns: 2 240px;
+      column-gap: 24px;
+    }
+
+    .toc a {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .perms div {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+</style>
