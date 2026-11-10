@@ -1,0 +1,92 @@
+<template>
+  <style>
+    @font-face {
+      font-family: 'Geist';
+      src: url('assets/fonts/geist.woff2') format('woff2');
+      font-weight: 100 900;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: 'Geist', sans-serif;
+    }
+    #music-stage,
+    #music-cam {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+    #music-cam video {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+    }
+    .title {
+      position: absolute;
+      left: 192px;
+      top: 760px;
+      color: #fff;
+      font-size: 96px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      white-space: nowrap;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+    }
+    .title span {
+      display: inline-block;
+    }
+    .word {
+      position: absolute;
+      left: 192px;
+      top: 730px;
+      color: #fff;
+      font-size: 150px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      white-space: nowrap;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+    }
+  </style>
+  <div id="root" data-composition-id="music" data-width="1920" data-height="1080">
+    <div id="music-stage">
+      <div id="music-cam">
+        <video id="music-vid" class="clip" data-start="0" data-duration="3.65" data-media-start="0" src="assets/music.mp4" muted playsinline></video>
+      </div>
+      <h1 id="music-name" class="clip title" data-start="0.2" data-duration="1.75">
+        <span class="l">D</span><span class="l">y</span><span class="l">n</span><span class="l">a</span><span class="l">m</span><span class="l">i</span><span class="l">c</span><span class="l">N</span><span class="l">o</span><span class="l">t</span><span class="l">c</span><span class="l">h</span>
+      </h1>
+      <h2 id="music-word" class="clip word" data-start="1.95" data-duration="1.7"><span id="music-word-in" style="display:inline-block">Music</span></h2>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.set('#music-cam', { transformOrigin: '0 0', x: -460, y: 0, scale: 1.24 }, 0);
+
+    // Blur swap in.
+    tl.fromTo('#music-stage', { opacity: 0, filter: 'blur(8px)' },
+      { opacity: 1, filter: 'blur(0px)', duration: 0.13, ease: 'power4.out' }, 0);
+
+    // The name, per letter, over the open notch.
+    tl.fromTo('#music-name .l', { opacity: 0.3, filter: 'blur(4px)' },
+      { opacity: 1, filter: 'blur(0px)', duration: 0.1, ease: 'power4.out', stagger: 0.035 }, 0.25);
+    tl.to('#music-name .l', { opacity: 0, filter: 'blur(8px)', duration: 0.18, ease: 'power3.in', stagger: 0.012 }, 1.75);
+
+    // "Music": whole line blurs in, then holds dead still.
+    tl.fromTo('#music-word-in', { opacity: 0, filter: 'blur(8px)' },
+      { opacity: 1, filter: 'blur(0px)', duration: 0.18, ease: 'expo.out' }, 1.95);
+
+    // Vertical whip out to AI usage.
+    tl.fromTo('#music-stage', { y: 0 },
+      { y: -160, filter: 'blur(14px)', opacity: 0, duration: 0.15, ease: 'power3.in', immediateRender: false }, 3.5);
+
+    window.__timelines['music'] = tl;
+  </script>
+</template>

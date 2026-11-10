@@ -1,0 +1,127 @@
+<template>
+  <style>
+    @font-face {
+      font-family: 'Geist';
+      src: url('assets/fonts/geist.woff2') format('woff2');
+      font-weight: 100 900;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: 'Geist', sans-serif;
+    }
+    #end-cam {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+    #end-cam img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+    }
+    /* The notch itself: extends above the frame so its top corners stay square. */
+    #end-panel {
+      position: absolute;
+      left: 0;
+      top: -60px;
+      width: 1920px;
+      height: 1140px;
+      background: #000;
+    }
+    #end-lockup {
+      position: absolute;
+      left: 0;
+      top: 330px;
+      width: 1920px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+    }
+    #end-icon {
+      width: 190px;
+      height: 190px;
+    }
+    #end-name {
+      color: #fff;
+      font-size: 128px;
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1;
+    }
+    #end-cta {
+      position: absolute;
+      left: 0;
+      top: 600px;
+      width: 1920px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+    #end-button {
+      display: inline-flex;
+      align-items: center;
+      height: 96px;
+      padding: 0 52px;
+      border-radius: 999px;
+      background: #fff;
+      color: #000;
+      font-size: 42px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    #end-req {
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 40px;
+      font-weight: 500;
+    }
+  </style>
+  <div id="root" data-composition-id="endcard" data-width="1920" data-height="1080">
+    <div id="end-cam" data-layout-allow-overflow>
+      <img id="end-idle" class="clip" data-start="0.7" data-duration="3.2" src="assets/idle.png" alt="" />
+    </div>
+    <div id="end-panel" data-layout-allow-overflow></div>
+    <div id="end-lockup" class="clip" data-start="0.55" data-duration="2.75">
+      <img id="end-icon" src="assets/icon.png" alt="DynamicNotch app icon" />
+      <div id="end-name">DynamicNotch</div>
+    </div>
+    <div id="end-cta" class="clip" data-start="1.1" data-duration="2.2">
+      <div id="end-button">Download for macOS</div>
+      <div id="end-req">macOS 15 Sequoia or later</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.set('#end-cam', { transformOrigin: '0 0', x: -7.2, y: 0, scale: 1.2 }, 0);
+
+    // The open notch on the shelf grows past the frame: the notch becomes the end card.
+    tl.fromTo('#end-panel', { clipPath: 'inset(0px 698px 930px 700px round 28px)' },
+      { clipPath: 'inset(0px 0px 0px 0px round 0px)', duration: 0.65, ease: 'power3.inOut' }, 0);
+
+    // Icon springs in, then the wordmark wipes in beside it.
+    tl.fromTo('#end-icon', { scale: 0.6, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(1.15)' }, 0.6);
+    tl.fromTo('#end-name', { clipPath: 'inset(0% 100% 0% 0%)' },
+      { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.35, ease: 'power4.out' }, 0.8);
+
+    // Call to action.
+    tl.fromTo('#end-button', { opacity: 0, filter: 'blur(8px)' },
+      { opacity: 1, filter: 'blur(0px)', duration: 0.18, ease: 'expo.out' }, 1.15);
+    tl.fromTo('#end-req', { opacity: 0, filter: 'blur(8px)' },
+      { opacity: 1, filter: 'blur(0px)', duration: 0.18, ease: 'expo.out' }, 1.22);
+
+    // Leave, and shrink back into the idle notch: the last frame matches frame 0.
+    tl.to(['#end-lockup > *', '#end-cta > *'], { opacity: 0, filter: 'blur(8px)', duration: 0.15, ease: 'power3.in' }, 3.1);
+    tl.to('#end-panel', { clipPath: 'inset(0px 774px 1026px 774px round 14px)', duration: 0.6, ease: 'power3.inOut' }, 3.25);
+
+    window.__timelines['endcard'] = tl;
+  </script>
+</template>

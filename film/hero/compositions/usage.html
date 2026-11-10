@@ -1,0 +1,77 @@
+<template>
+  <style>
+    @font-face {
+      font-family: 'Geist';
+      src: url('assets/fonts/geist.woff2') format('woff2');
+      font-weight: 100 900;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: 'Geist', sans-serif;
+    }
+    #usage-stage,
+    #usage-cam,
+    #usage-dip {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+    #usage-cam video {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+    }
+    #usage-dip {
+      background: #000;
+      opacity: 0;
+    }
+    .word {
+      position: absolute;
+      left: 192px;
+      top: 730px;
+      color: #fff;
+      font-size: 150px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      white-space: nowrap;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+    }
+    .word span {
+      display: inline-block;
+    }
+  </style>
+  <div id="root" data-composition-id="usage" data-width="1920" data-height="1080">
+    <div id="usage-stage">
+      <div id="usage-cam">
+        <video id="usage-vid" class="clip" data-start="0" data-duration="3.0" data-media-start="0" src="assets/usage.mp4" muted playsinline></video>
+      </div>
+      <h2 id="usage-word" class="clip word" data-start="0.6" data-duration="2.4"><span class="w">AI</span> <span class="w">usage</span></h2>
+    </div>
+    <div id="usage-dip"></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.set('#usage-cam', { transformOrigin: '0 0', x: -252, y: 0, scale: 1.15 }, 0);
+
+    // Whip in from below, matching the outgoing direction.
+    tl.fromTo('#usage-stage', { y: 160, opacity: 0, filter: 'blur(14px)' },
+      { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.22, ease: 'expo.out' }, 0);
+
+    // Per word, from light grey to ink, no position change.
+    tl.fromTo('#usage-word .w', { opacity: 0, color: 'rgba(255,255,255,0.25)' },
+      { opacity: 1, color: 'rgba(255,255,255,1)', duration: 0.12, ease: 'power2.out', stagger: 0.09 }, 0.65);
+
+    // Dip: darken 40% for three frames before the hard cut to the HUD.
+    tl.fromTo('#usage-dip', { opacity: 0 }, { opacity: 0.4, duration: 0.1, ease: 'none' }, 2.9);
+
+    window.__timelines['usage'] = tl;
+  </script>
+</template>

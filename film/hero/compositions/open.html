@@ -1,0 +1,74 @@
+<template>
+  <style>
+    @font-face {
+      font-family: 'Geist';
+      src: url('assets/fonts/geist.woff2') format('woff2');
+      font-weight: 100 900;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: 'Geist', sans-serif;
+    }
+    #open-stage,
+    #open-cam {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+    #open-cam img,
+    #open-cam video {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+    }
+    .title {
+      position: absolute;
+      left: 192px;
+      top: 760px;
+      color: #fff;
+      font-size: 96px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      white-space: nowrap;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+    }
+    .title span {
+      display: inline-block;
+    }
+  </style>
+  <div id="root" data-composition-id="open" data-width="1920" data-height="1080">
+    <div id="open-stage">
+      <div id="open-cam">
+        <img id="open-still" class="clip" data-start="0" data-duration="1.95" src="assets/idle.png" alt="" />
+        <video id="open-vid" class="clip" data-start="1.9" data-duration="1.55" data-media-start="0" src="assets/open.mp4" muted playsinline></video>
+      </div>
+      <h1 id="open-t1" class="clip title" data-start="0" data-duration="2.35">
+        <span class="w">Your</span> <span class="w">notch</span> <span class="w">does</span> <span class="w">nothing</span>
+      </h1>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Same framing as the idle still, so frame 0 and the end of the loop match.
+    tl.set('#open-cam', { transformOrigin: '0 0', x: -7.2, y: 0, scale: 1.2 }, 0);
+
+    // "Your notch does nothing": per word, blur in, dead still, blur out.
+    tl.fromTo('#open-t1 .w', { opacity: 0, filter: 'blur(6px)' },
+      { opacity: 1, filter: 'blur(0px)', duration: 0.13, ease: 'power4.out', stagger: 0.067 }, 0.25);
+    tl.to('#open-t1 .w', { opacity: 0, filter: 'blur(8px)', duration: 0.18, ease: 'power3.in', stagger: 0.03 }, 2.1);
+
+    // Blur swap out to Music.
+    tl.fromTo('#open-stage', { opacity: 1, filter: 'blur(0px)' },
+      { opacity: 0, filter: 'blur(8px)', duration: 0.15, ease: 'power3.in' }, 3.3);
+
+    window.__timelines['open'] = tl;
+  </script>
+</template>
