@@ -72,27 +72,58 @@ const features = [
     </ul>
   </section>
 
-  <section class="container narrow section" id="install" aria-labelledby="install-title">
-    <h2 id="install-title" class="block-title">Install</h2>
+  <section class="container section" id="install" aria-labelledby="install-title">
+    <div class="install-head">
+      <h2 id="install-title">Install in a minute</h2>
+      <p class="muted">Free, for any Mac on {app.requirements}.</p>
+    </div>
+
     <div class="install">
       <article class="card install-card">
-        <h3>Download</h3>
+        <div class="card-top">
+          <span class="icon-tile"><Icon name="download" size={18} /></span>
+          <div>
+            <h3>Download</h3>
+            <p class="muted">The app, straight from GitHub.</p>
+          </div>
+        </div>
         <ol class="steps">
-          <li>Download <a class="inline" href={app.download}>DynamicNotch.dmg</a> and drag the app to Applications.</li>
+          <li><span class="n">1</span><div>Download <strong>DynamicNotch.dmg</strong> and drag the app to Applications.</div></li>
           <li>
-            Run this once in Terminal to clear the macOS security warning:
-            <CopyCommand command={app.unquarantine} label="Copy the Terminal command" />
+            <span class="n">2</span>
+            <div>
+              Run this once in Terminal to clear the macOS security warning:
+              <CopyCommand command={app.unquarantine} label="Copy the Terminal command" />
+            </div>
           </li>
-          <li>Open DynamicNotch.</li>
+          <li><span class="n">3</span><div>Open DynamicNotch.</div></li>
         </ol>
+        <a class="btn btn-primary card-btn" href={app.download}><Icon name="download" size={16} /> Download for Mac</a>
       </article>
+
       <article class="card install-card">
-        <h3>Homebrew</h3>
-        <p class="muted">One command, and it skips the security warning.</p>
-        <CopyCommand command={app.brew} label="Copy the Homebrew command" />
+        <div class="card-top">
+          <span class="icon-tile"><Icon name="terminal" size={18} /></span>
+          <div>
+            <h3>Homebrew</h3>
+            <p class="muted">One command, no security warning.</p>
+          </div>
+        </div>
+        <ol class="steps">
+          <li>
+            <span class="n">1</span>
+            <div>
+              Run this in Terminal:
+              <CopyCommand command={app.brew} label="Copy the Homebrew command" />
+            </div>
+          </li>
+          <li><span class="n">2</span><div>Open DynamicNotch.</div></li>
+        </ol>
+        <a class="btn card-btn" href="https://brew.sh" target="_blank" rel="noopener">New to Homebrew? <Icon name="arrow-up-right" size={14} /></a>
       </article>
     </div>
-    <p class="muted install-note">Any Mac on {app.requirements} works. Need help? See <a class="inline" href="/support">Support</a>.</p>
+
+    <p class="muted install-note">Something not working? <a class="inline" href="/support">Get help</a>.</p>
   </section>
 </Base>
 
@@ -177,51 +208,101 @@ const features = [
     color: var(--text-2);
   }
 
-  /* Install */
+  /* Install: centred heading, two equal cards with matching steps. */
 
-  .block-title {
-    margin-bottom: 20px;
-    font-size: 24px;
-    letter-spacing: -0.025em;
+  .install-head {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .install-head h2 {
+    font-size: clamp(30px, 3.8vw, 44px);
+    letter-spacing: -0.035em;
+  }
+
+  .install-head p {
+    margin-top: 10px;
+    font-size: 17px;
   }
 
   .install {
     display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-    gap: 14px;
-    align-items: start;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 980px;
+    margin-inline: auto;
   }
 
   .install-card {
-    display: grid;
-    gap: 14px;
-    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding: 28px;
   }
 
-  .install-card h3 {
-    font-size: 17px;
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .card-top h3 {
+    font-size: 19px;
+    letter-spacing: -0.02em;
+  }
+
+  .card-top p {
+    margin-top: 2px;
+    font-size: 14.5px;
   }
 
   .steps {
     display: grid;
-    gap: 12px;
+    gap: 16px;
     margin: 0;
-    padding: 0 0 0 1.2em;
-    color: color-mix(in srgb, var(--text) 82%, var(--text-2));
-    font-size: 15.5px;
+    padding: 0;
+    list-style: none;
   }
 
-  .steps li::marker {
-    color: var(--text-2);
+  .steps li {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    font-size: 15.5px;
+    color: color-mix(in srgb, var(--text) 84%, var(--text-2));
+  }
+
+  .steps strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .n {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
   }
 
   .steps li :global(.cmd) {
-    margin-top: 8px;
+    margin-top: 10px;
+  }
+
+  .card-btn {
+    align-self: flex-start;
+    margin-top: auto;
   }
 
   .install-note {
-    margin-top: 16px;
-    font-size: 14.5px;
+    margin-top: 22px;
+    text-align: center;
+    font-size: 15px;
   }
 
   @media (max-width: 900px) {
@@ -231,6 +312,10 @@ const features = [
 
     .install {
       grid-template-columns: 1fr;
+    }
+
+    .install-card {
+      padding: 22px;
     }
   }
 

@@ -10,10 +10,10 @@ SIZE = 'scale=1920:800:flags=lanczos'  # 2.4:1 letterbox
 FADE = 0.5
 # (start, end) in the recording: each one is clear of windows inside the crop
 SEGMENTS = [
-    (0.0, 6.3),    # idle notch, cursor arrives, opens to Now Playing
-    (18.4, 22.0),  # Now Playing, skip to the next track and back
+    (0.0, 3.8),    # idle notch, cursor arrives, opens to Now Playing (ends before it collapses at 4.1 s)
+    (18.4, 22.0),  # Now Playing, skip to the next track
     (28.6, 31.6),  # Shelf with AirDrop and files
-    (35.6, 39.6),  # Stats: CPU, RAM, swap
+    (35.6, 39.3),  # Stats: CPU, RAM, swap (ends before a settings window appears at 39.65 s)
     (60.0, 65.2),  # opens to Now Playing, switches to AI usage, closes
 ]
 

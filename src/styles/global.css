@@ -2,21 +2,25 @@
 @import '@fontsource-variable/geist-mono';
 
 /* ─── Tokens ─────────────────────────────────────────────────────────────── */
-/* Dark only: the notch is black, so the site is too. Accent is the icon's mint. */
+/* Dusk: taken from the hero video's sunset and the app icon. A blue-black ground with
+   a hint of indigo, a sunset-peach accent (like the icon's album tile) and dusk-blue links. */
 
 :root {
   color-scheme: dark;
-  --bg: #09090b;
-  --surface: #111115;
-  --surface-2: #17171d;
-  --border: #25252d;
-  --border-strong: #34343e;
-  --text: #f5f5f7;
-  --text-2: #9d9daa;
-  --accent: #6ad09d;
-  --accent-soft: rgb(106 208 157 / 0.1);
+  --bg: #0b0c14;
+  --surface: #141626;
+  --surface-2: #1b1e33;
+  --border: #262a40;
+  --border-strong: #353a58;
+  --text: #f4f2ee;
+  --text-2: #a3a6bc;
+  --accent: #ffa47a;
+  --accent-hover: #ffb994;
+  --accent-ink: #1d1009;
+  --accent-soft: rgb(255 164 122 / 0.12);
+  --link: #9db2ff;
   --indigo: #4a3fb8;
-  --focus: #6ad09d;
+  --focus: #ffa47a;
 
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -117,7 +121,7 @@ code {
 }
 
 ::selection {
-  background: rgb(106 208 157 / 0.25);
+  background: rgb(255 164 122 / 0.28);
 }
 
 /* ─── Layout primitives ──────────────────────────────────────────────────── */
@@ -231,16 +235,16 @@ code {
   border-color: var(--text-2);
 }
 
-/* Primary is white, like the button at the end of the film. */
+/* Primary is sunset peach. */
 .btn-primary {
-  background: var(--text);
-  border-color: var(--text);
-  color: #09090b;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .btn-primary:hover {
-  background: #dcdce2;
-  border-color: #dcdce2;
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
 .actions {
@@ -256,7 +260,7 @@ code {
   padding: 16px 20px;
   border-radius: var(--radius-sm);
   background: var(--accent-soft);
-  border: 1px solid rgb(106 208 157 / 0.22);
+  border: 1px solid rgb(255 164 122 / 0.24);
 }
 
 .callout svg {
@@ -318,7 +322,7 @@ code {
 
 .prose a,
 a.inline {
-  color: var(--accent);
+  color: var(--link);
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
