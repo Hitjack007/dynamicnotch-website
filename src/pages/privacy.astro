@@ -164,6 +164,14 @@ const permissions = [
     border-left-color: var(--text-2);
   }
 
+  /* The section you're reading. */
+  .toc a.active {
+    color: var(--text);
+    font-weight: 600;
+    border-left: 2px solid var(--accent);
+    padding-left: 13px;
+  }
+
   .policy .callout {
     margin-top: 20px;
   }
@@ -238,3 +246,44 @@ const permissions = [
     }
   }
 </style>
+
+<script>
+  // Highlight the section being read in the "On this page" list.
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.toc a'));
+  const sections = links
+    .map(link => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+    .filter((el): el is HTMLElement => el !== null);
+
+  let queued = false;
+
+  const update = () => {
+    queued = false;
+    if (!sections.length) return;
+    // A section counts as current once its heading passes a line a little below the sticky header.
+    const line = (document.querySelector('.header')?.getBoundingClientRect().height ?? 64) + 120;
+    let current = sections[0];
+    for (const section of sections) {
+      if (section.getBoundingClientRect().top <= line) current = section;
+    }
+    // At the very bottom, short last sections can't reach the line, so the last one wins.
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+      current = sections[sections.length - 1];
+    }
+    for (const link of links) {
+      const active = link.hash === `#${current.id}`;
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    }
+  };
+
+  const queue = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(update);
+  };
+
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+  update();
+</script>
