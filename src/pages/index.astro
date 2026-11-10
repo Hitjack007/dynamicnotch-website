@@ -35,6 +35,7 @@ const features = [
   title="DynamicNotch: make your MacBook's notch actually useful"
   description="DynamicNotch turns your MacBook's notch into a live dashboard: music, AI usage limits, HUDs, a file shelf, fan and CPU stats, and automations in plain English. Free and open source."
   image={hero.still}
+  sky="hero"
 >
   <section class="container hero">
     <h1>{app.tagline}</h1>
@@ -149,7 +150,7 @@ const features = [
     max-width: 46ch;
     margin-top: 20px;
     font-size: 19px;
-    color: var(--text-2);
+    color: rgb(247 243 238 / 0.82);
   }
 
   .hero .actions {
@@ -160,6 +161,7 @@ const features = [
   .hero-note {
     margin-top: 14px;
     font-size: 14px;
+    color: rgb(247 243 238 / 0.72);
   }
 
   .screen {
@@ -167,9 +169,11 @@ const features = [
     margin-top: 56px;
     overflow: hidden;
     border-radius: calc(var(--radius) + 6px);
-    border: 1px solid var(--border-strong);
+    border: 1px solid rgb(255 255 255 / 0.16);
     background: #000;
-    box-shadow: 0 40px 100px -40px rgb(0 0 0 / 0.9);
+    box-shadow:
+      0 50px 120px -50px rgb(40 22 40 / 0.85),
+      0 0 0 1px rgb(0 0 0 / 0.2);
   }
 
   .screen img,

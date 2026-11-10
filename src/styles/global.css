@@ -2,18 +2,19 @@
 @import '@fontsource-variable/geist-mono';
 
 /* ─── Tokens ─────────────────────────────────────────────────────────────── */
-/* Dusk: taken from the hero video's sunset and the app icon. A blue-black ground with
-   a hint of indigo, a sunset-peach accent (like the icon's album tile) and dusk-blue links. */
+/* Dusk: taken from the hero video's sunset and the app icon. A dusk sky at the top of each
+   page (see .sky in Base.astro) settles into a deep indigo ground, with a sunset-peach accent
+   (like the icon's album tile) and dusk-blue links. */
 
 :root {
   color-scheme: dark;
-  --bg: #0b0c14;
-  --surface: #141626;
-  --surface-2: #1b1e33;
-  --border: #262a40;
-  --border-strong: #353a58;
-  --text: #f4f2ee;
-  --text-2: #a3a6bc;
+  --bg: #161829;
+  --surface: #20233a;
+  --surface-2: #282b46;
+  --border: #33375a;
+  --border-strong: #454a70;
+  --text: #f7f3ee;
+  --text-2: #b4b6cc;
   --accent: #ffa47a;
   --accent-hover: #ffb994;
   --accent-ink: #1d1009;
