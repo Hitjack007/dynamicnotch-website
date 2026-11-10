@@ -42,7 +42,21 @@ const features = [
       Make your MacBook's notch actually{' '}
       <span class="mark">
         useful<svg class="swoosh" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M3 17 C 60 9, 150 4, 236 4.5 C 241 4.7, 241 10.5, 236 11 C 150 11.5, 70 18.5, 8 23.5 C 2 24, 0 18.5, 3 17 Z" />
+          <defs>
+            <!-- Pencil texture: slightly wobbly edges, plus streaks running along the stroke. -->
+            <filter id="pencil" x="-4%" y="-60%" width="108%" height="220%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.05 0.5" numOctaves="2" seed="4" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G" result="wobble" />
+              <feTurbulence type="fractalNoise" baseFrequency="0.03 0.9" numOctaves="3" seed="9" result="grain" />
+              <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.2 1.4" result="streaks" />
+              <feComposite in="wobble" in2="streaks" operator="in" />
+            </filter>
+          </defs>
+          <g filter="url(#pencil)">
+            <path d="M3 17 C 60 9, 150 4, 236 4.5 C 241 4.7, 241 10.5, 236 11 C 150 11.5, 70 18.5, 8 23.5 C 2 24, 0 18.5, 3 17 Z" />
+            <!-- A lighter second pass over the right-hand part, like going over a pencil line twice. -->
+            <path class="second-pass" d="M70 15.5 C 120 11, 175 8.5, 232 9 C 234.5 9.1, 234.5 11.6, 232 11.8 C 175 12.2, 125 15, 72 18.6 C 69.5 18.8, 68.8 15.9, 70 15.5 Z" />
+          </g>
         </svg>
       </span>.
     </h1>
@@ -165,6 +179,10 @@ const features = [
 
   .swoosh path {
     fill: var(--accent);
+  }
+
+  .swoosh .second-pass {
+    opacity: 0.45;
   }
 
   /* Revealed left to right like a pen stroke: quick to start, easing off at the end. */
