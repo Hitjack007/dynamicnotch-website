@@ -1,14 +1,400 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
-import FeatureGrid from '../components/FeatureGrid.astro';
-import Footer from '../components/Footer.astro';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import CopyCommand from '../components/CopyCommand.astro';
+import { app } from '../data/site';
+
+// The hero screen: a steady 2.4:1 loop of the top of a Mac screen, cut by film/build-hero.py.
+const hero = {
+  still: '/media/hero/still.jpg',
+  video: { webm: '/media/hero/hero.webm', mp4: '/media/hero/hero.mp4', small: '/media/hero/hero-960.mp4' },
+};
+
+// From the app's README, one line each.
+const features = [
+  { icon: 'wave', title: 'Music', text: 'Album art, controls and a live audio visualizer.' },
+  { icon: 'cpu', title: 'AI usage', text: 'Your Claude and ChatGPT limits, before you hit them.' },
+  { icon: 'resize', title: 'Custom HUDs', text: 'Volume, brightness and keyboard backlight, in the notch.' },
+  { icon: 'tray', title: 'Shelf', text: 'Drop files on the notch, then drag or AirDrop them out.' },
+  { icon: 'bulb', title: 'Extensions', text: 'Automations described in plain English. No code.' },
+  { icon: 'calendar', title: 'Calendar & Reminders', text: 'What’s coming up, at a glance.' },
+  { icon: 'fan', title: 'Fan & thermal', text: 'Fan speed, CPU temperature and a fan curve editor.' },
+  { icon: 'coffee', title: 'Caffeine', text: 'Keep your Mac awake from the notch.' },
+  { icon: 'downloads', title: 'Downloads', text: 'Track in-progress browser downloads.' },
+  { icon: 'camera', title: 'Mirror', text: 'A quick webcam check before a call.' },
+  { icon: 'battery', title: 'Battery', text: 'Charging status and percentage.' },
+  { icon: 'gesture', title: 'Gestures', text: 'Swipe to open and close.' },
+  { icon: 'glass', title: 'Liquid Glass', text: 'An optional glass notch on macOS 26.' },
+  { icon: 'lyrics', title: 'Lyrics', text: 'Optional lyrics for what’s playing.' },
+  { icon: 'laptop', title: 'Any Mac', text: 'Draws its own notch if yours has none.' },
+  { icon: 'github', title: 'Open source', text: 'Free, GPL-3.0, built on boring.notch.' },
+] as const;
 ---
 
-<Layout>
-	<Nav />
-	<Hero />
-	<FeatureGrid />
-	<Footer />
-</Layout>
+<Base
+  title="DynamicNotch: make your MacBook's notch actually useful"
+  description="DynamicNotch turns your MacBook's notch into a live dashboard: music, AI usage limits, HUDs, a file shelf, fan and CPU stats, and automations in plain English. Free and open source."
+  image={hero.still}
+  sky="hero"
+>
+  <section class="container hero">
+    <h1>
+      Make your MacBook's notch actually{' '}
+      <span class="mark">
+        useful<svg class="swoosh" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <!-- Pencil texture: slightly wobbly edges, plus streaks running along the stroke. -->
+            <filter id="pencil" x="-4%" y="-60%" width="108%" height="220%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.05 0.5" numOctaves="2" seed="4" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G" result="wobble" />
+              <feTurbulence type="fractalNoise" baseFrequency="0.03 0.9" numOctaves="3" seed="9" result="grain" />
+              <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.2 1.4" result="streaks" />
+              <feComposite in="wobble" in2="streaks" operator="in" />
+            </filter>
+          </defs>
+          <g filter="url(#pencil)">
+            <path d="M3 17 C 60 9, 150 4, 236 4.5 C 241 4.7, 241 10.5, 236 11 C 150 11.5, 70 18.5, 8 23.5 C 2 24, 0 18.5, 3 17 Z" />
+            <!-- A lighter second pass over the right-hand part, like going over a pencil line twice. -->
+            <path class="second-pass" d="M70 15.5 C 120 11, 175 8.5, 232 9 C 234.5 9.1, 234.5 11.6, 232 11.8 C 175 12.2, 125 15, 72 18.6 C 69.5 18.8, 68.8 15.9, 70 15.5 Z" />
+          </g>
+        </svg>
+      </span>.
+    </h1>
+    <p class="lede">Music, AI usage, HUDs, a file shelf and more, in the space that was doing nothing.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href={app.download}><Icon name="download" size={16} /> Download for Mac</a>
+      <a class="btn" href={app.repo} target="_blank" rel="noopener"><Icon name="github" size={16} /> View on GitHub</a>
+    </div>
+    <p class="hero-note muted">Free and open source · {app.requirements}</p>
+
+    <div class="screen">
+      {hero.video ? (
+        <video data-autoplay muted loop playsinline preload="auto" poster={hero.still} width="1920" height="800"
+          aria-label="DynamicNotch in use: the notch opens to Now Playing, skips a track, then shows the file shelf, system stats and AI usage before closing again.">
+          <source src={hero.video.small} type="video/mp4" media="(max-width: 700px)" />
+          <source src={hero.video.webm} type="video/webm" />
+          <source src={hero.video.mp4} type="video/mp4" />
+        </video>
+      ) : (
+        <img src={hero.still} width="1920" height="800" alt="The DynamicNotch notch open at the top of a Mac screen, showing a song playing next to a small calendar." />
+      )}
+    </div>
+  </section>
+
+  <section class="container section" id="features" aria-labelledby="features-title">
+    <h2 id="features-title" class="sr-only">Features</h2>
+    <ul class="features">
+      {features.map(f => (
+        <li>
+          <Icon name={f.icon} size={26} />
+          <h3>{f.title}</h3>
+          <p>{f.text}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="container section" id="install" aria-labelledby="install-title">
+    <div class="install-head">
+      <h2 id="install-title">Install in a minute</h2>
+      <p class="muted">Free, for any Mac on {app.requirements}.</p>
+    </div>
+
+    <div class="install">
+      <article class="card install-card">
+        <div class="card-top">
+          <span class="icon-tile"><Icon name="download" size={18} /></span>
+          <div>
+            <h3>Download</h3>
+            <p class="muted">The app, straight from GitHub.</p>
+          </div>
+          <a class="btn btn-primary card-btn" href={app.download}><Icon name="download" size={16} /> Download for Mac</a>
+        </div>
+        <ol class="steps">
+          <li><span class="n">1</span><div>Download <strong>DynamicNotch.dmg</strong> and drag the app to Applications.</div></li>
+          <li>
+            <span class="n">2</span>
+            <div>
+              Run this once in Terminal to clear the macOS security warning:
+              <CopyCommand command={app.unquarantine} label="Copy the Terminal command" />
+            </div>
+          </li>
+          <li><span class="n">3</span><div>Open DynamicNotch.</div></li>
+        </ol>
+      </article>
+
+      <article class="card install-card">
+        <div class="card-top">
+          <span class="icon-tile"><Icon name="terminal" size={18} /></span>
+          <div>
+            <h3>Homebrew</h3>
+            <p class="muted">One command, no security warning.</p>
+          </div>
+          <a class="btn card-btn" href="https://brew.sh" target="_blank" rel="noopener">New to Homebrew? <Icon name="arrow-up-right" size={14} /></a>
+        </div>
+        <ol class="steps">
+          <li>
+            <span class="n">1</span>
+            <div>
+              Run this in Terminal:
+              <CopyCommand command={app.brew} label="Copy the Homebrew command" />
+            </div>
+          </li>
+          <li><span class="n">2</span><div>Open DynamicNotch.</div></li>
+        </ol>
+      </article>
+    </div>
+
+    <p class="muted install-note">Something not working? <a class="inline" href="/support">Get help</a>.</p>
+  </section>
+</Base>
+
+<style>
+  /* Hero: centred, then one wide screen with the notch fixed at the top. */
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
+    text-align: center;
+  }
+
+  /* "useful" gets a hand-drawn peach underline that draws itself in once. */
+  .mark {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  /* A brush stroke: thin at the ends, thicker in the middle, rising slightly to the right. */
+  .swoosh {
+    position: absolute;
+    left: -2%;
+    bottom: -0.14em;
+    width: 104%;
+    height: 0.3em;
+    overflow: visible;
+  }
+
+  .swoosh path {
+    fill: var(--accent);
+  }
+
+  .swoosh .second-pass {
+    opacity: 0.45;
+  }
+
+  /* Revealed left to right like a pen stroke: quick to start, easing off at the end. */
+  @media (prefers-reduced-motion: no-preference) {
+    .swoosh {
+      animation: stroke 0.55s cubic-bezier(0.25, 0.8, 0.3, 1) 0.45s both;
+    }
+  }
+
+  @keyframes stroke {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  .hero h1 {
+    max-width: 14ch;
+    font-size: clamp(42px, 6.4vw, 76px);
+    letter-spacing: -0.045em;
+    line-height: 1.02;
+  }
+
+  .lede {
+    max-width: 46ch;
+    margin-top: 20px;
+    font-size: 19px;
+    color: rgb(247 243 238 / 0.82);
+  }
+
+  .hero .actions {
+    justify-content: center;
+    margin-top: 28px;
+  }
+
+  .hero-note {
+    margin-top: 14px;
+    font-size: 14px;
+    color: rgb(247 243 238 / 0.72);
+  }
+
+  .screen {
+    width: 100%;
+    margin-top: 56px;
+    overflow: hidden;
+    border-radius: calc(var(--radius) + 6px);
+    border: 1px solid rgb(255 255 255 / 0.16);
+    background: #000;
+    box-shadow:
+      0 50px 120px -50px rgb(40 22 40 / 0.85),
+      0 0 0 1px rgb(0 0 0 / 0.2);
+  }
+
+  .screen img,
+  .screen video {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 12 / 5;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  /* Features: a quiet icon grid. */
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 44px 32px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .features li :global(svg) {
+    color: var(--accent);
+  }
+
+  .features h3 {
+    margin-top: 14px;
+    font-size: 17px;
+    letter-spacing: -0.015em;
+  }
+
+  .features p {
+    margin-top: 4px;
+    font-size: 14.5px;
+    color: var(--text-2);
+  }
+
+  /* Install: centred heading, two equal cards with matching steps. */
+
+  .install-head {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .install-head h2 {
+    font-size: clamp(30px, 3.8vw, 44px);
+    letter-spacing: -0.035em;
+  }
+
+  .install-head p {
+    margin-top: 10px;
+    font-size: 17px;
+  }
+
+  .install {
+    display: grid;
+    gap: 16px;
+    max-width: 760px;
+    margin-inline: auto;
+  }
+
+  .install-card {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding: 28px;
+  }
+
+  .card-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .card-top h3 {
+    font-size: 19px;
+    letter-spacing: -0.02em;
+  }
+
+  .card-top p {
+    margin-top: 2px;
+    font-size: 14.5px;
+  }
+
+  .steps {
+    display: grid;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .steps li {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    font-size: 15.5px;
+    color: color-mix(in srgb, var(--text) 84%, var(--text-2));
+  }
+
+  .steps strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .n {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+  }
+
+  .steps li :global(.cmd) {
+    margin-top: 10px;
+  }
+
+  .card-btn {
+    margin-left: auto;
+  }
+
+  .install-note {
+    margin-top: 22px;
+    text-align: center;
+    font-size: 15px;
+  }
+
+  @media (max-width: 900px) {
+    .features {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .install-card {
+      padding: 22px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .card-btn {
+      margin-left: 50px;
+    }
+
+    .hero {
+      padding-top: 48px;
+    }
+
+    .screen {
+      margin-top: 36px;
+    }
+
+    .features {
+      gap: 32px 20px;
+    }
+  }
+</style>

@@ -1,0 +1,353 @@
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+
+/* ─── Tokens ─────────────────────────────────────────────────────────────── */
+/* Dusk: taken from the hero video's sunset and the app icon. A dusk sky at the top of each
+   page (see .sky in Base.astro) settles into a deep indigo ground, with a sunset-peach accent
+   (like the icon's album tile) and dusk-blue links. */
+
+:root {
+  color-scheme: dark;
+  --bg: #161829;
+  --surface: #20233a;
+  --surface-2: #282b46;
+  --border: #33375a;
+  --border-strong: #454a70;
+  --text: #f7f3ee;
+  --text-2: #b4b6cc;
+  --accent: #ffa47a;
+  --accent-hover: #ffb994;
+  --accent-ink: #1d1009;
+  --accent-soft: rgb(255 164 122 / 0.12);
+  --link: #9db2ff;
+  --indigo: #4a3fb8;
+  --focus: #ffa47a;
+
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --max: 1120px;
+  --narrow: 760px;
+  --gutter: 24px;
+  --header-h: 64px;
+  --radius: 18px;
+  --radius-sm: 12px;
+  --section: 120px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --dur: 200ms;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --gutter: 20px;
+    --header-h: 56px;
+    --section: 72px;
+    --radius: 14px;
+  }
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 20px);
+}
+
+/* Links to sections (Features, Install, the privacy contents) glide instead of jumping. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: rgb(255 164 122 / 0.28);
+}
+
+/* ─── Layout primitives ──────────────────────────────────────────────────── */
+
+.container {
+  width: 100%;
+  max-width: calc(var(--max) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container.narrow {
+  max-width: calc(var(--narrow) + var(--gutter) * 2);
+}
+
+.section {
+  padding-top: var(--section);
+}
+
+.section-head {
+  max-width: 680px;
+  margin-bottom: 40px;
+}
+
+.section-head h2 {
+  margin-top: 12px;
+  font-size: clamp(30px, 3.8vw, 44px);
+  letter-spacing: -0.035em;
+}
+
+.section-head p {
+  margin-top: 14px;
+  font-size: 18px;
+  color: var(--text-2);
+}
+
+.page-head {
+  padding: 72px 0 40px;
+}
+
+.page-head h1 {
+  margin-top: 12px;
+  font-size: clamp(38px, 5vw, 56px);
+  letter-spacing: -0.04em;
+}
+
+.page-head .lede {
+  margin-top: 14px;
+  font-size: 18px;
+  color: var(--text-2);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.eyebrow.accent {
+  color: var(--accent);
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+.muted {
+  color: var(--text-2);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Shared components ──────────────────────────────────────────────────── */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding-inline: 20px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+
+.btn:hover {
+  border-color: var(--text-2);
+}
+
+/* Primary is sunset peach. */
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.callout {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  border: 1px solid rgb(255 164 122 / 0.24);
+}
+
+.callout svg {
+  flex: none;
+  margin-top: 3px;
+  color: var(--accent);
+}
+
+.icon-tile {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.prose {
+  max-width: 68ch;
+}
+
+.prose > * + * {
+  margin-top: 1em;
+}
+
+.prose h2 {
+  margin-top: 2.2em;
+  font-size: 24px;
+}
+
+.prose h2 + * {
+  margin-top: 0.75em;
+}
+
+.prose p,
+.prose li {
+  color: color-mix(in srgb, var(--text) 82%, var(--text-2));
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.2em;
+}
+
+.prose li + li {
+  margin-top: 0.5em;
+}
+
+.prose li::marker {
+  color: var(--text-2);
+}
+
+.prose strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.prose a,
+a.inline {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 720px) {
+  .page-head {
+    padding: 40px 0 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

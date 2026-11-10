@@ -1,0 +1,166 @@
+---
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import appIcon from '../assets/app-icon.png';
+import { app } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  /** The dusk sky behind the top of the page: 'hero' warms to peach behind the home page video. */
+  sky?: 'hero' | 'page';
+}
+
+const { title, description, image, sky = 'page' } = Astro.props;
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '');
+const canonical = new URL(path || '/', app.url).href;
+const touchIcon = await getImage({ src: appIcon, width: 180, height: 180, format: 'png' });
+const ogIcon = await getImage({ src: appIcon, width: 512, height: 512, format: 'png' });
+const ogImage = new URL(image ?? ogIcon.src, app.url).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#2b3150" />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={app.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href={touchIcon.src} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <div class:list={['sky', `sky-${sky}`]} aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Autoplaying clips: play only while on screen, and never for people who ask for less motion.
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const videos = Array.from(document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]'));
+
+      const setStill = (still: boolean) => {
+        for (const v of videos) {
+          v.controls = still;
+          if (still) v.pause();
+        }
+      };
+
+      const observer = new IntersectionObserver(
+        entries => {
+          if (reduce.matches) return;
+          for (const e of entries) {
+            const v = e.target as HTMLVideoElement;
+            if (e.isIntersecting) v.play().catch(() => {});
+            else v.pause();
+          }
+        },
+        { threshold: 0.25 },
+      );
+      videos.forEach(v => observer.observe(v));
+      setStill(reduce.matches);
+      reduce.addEventListener('change', () => {
+        setStill(reduce.matches);
+        if (!reduce.matches) {
+          videos.forEach(v => {
+            observer.unobserve(v);
+            observer.observe(v);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  /* The page's sky: the sunset from the hero video, fading into the indigo ground. */
+  .sky {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .sky-page {
+    height: 640px;
+    background: linear-gradient(180deg, #2b3150 0px, #262944 280px, var(--bg) 640px);
+  }
+
+  .sky-hero {
+    height: 1560px;
+    background:
+      radial-gradient(60% 420px at 50% 820px, rgb(232 150 112 / 0.55), transparent 70%),
+      linear-gradient(
+        180deg,
+        #2b3150 0px,
+        #363756 280px,
+        #54496c 520px,
+        #8a6476 720px,
+        #b9796f 860px,
+        #8a6476 1040px,
+        #3d3452 1260px,
+        var(--bg) 1560px
+      );
+  }
+
+  @media (max-width: 700px) {
+    .sky-hero {
+      height: 1100px;
+      background:
+        radial-gradient(90% 260px at 50% 560px, rgb(232 150 112 / 0.5), transparent 70%),
+        linear-gradient(
+          180deg,
+          #2b3150 0px,
+          #3f3b5d 300px,
+          #7d5f75 470px,
+          #b9796f 580px,
+          #7d5f75 720px,
+          #3d3452 880px,
+          var(--bg) 1100px
+        );
+    }
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 16px;
+    top: -48px;
+    z-index: 50;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 14px;
+  }
+
+  .skip-link:focus {
+    top: 12px;
+  }
+</style>
